@@ -1,0 +1,20 @@
+def Home(request):
+    if request.method == 'POST':
+        form = Listform(request.POST)
+        # messages.success(request,('Item has been added Successfully!'))
+        
+        if form.is_valid():
+            instance = form.save(commit=False)
+            # instance.user = request.user
+            # print('Author id: ',instance.author)
+            instance.save() 
+            # form.save()
+            all_item = List.object.all()
+            messages.success(request,('Item has been added Successfully!'))
+            return render(request,'index.html',{'all_item':all_item})
+        else:
+            return HttpResponse('I dont Know dfaq is happening!')
+    else:
+        all_item = List.object.all()
+        # return HttpResponse('I dont Knoow!')
+        return render(request,'index.html',{'all_item':all_item})

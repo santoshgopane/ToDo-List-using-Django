@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if messages %}
+    {% for msg in messages %}
+    <br>
+    <div class="alert alert-warning alert-dismissable" role="alert">
+        <button class="close" data-dismiss="alert">
+            <small><sup>x</sup></small>
+        </button>          
+        {{ msg }}
+    </div>
+    {% endfor %}
+{% endif %}
+
+
+{% if user.is_authenticated %}
+<table class="table table-bordered">
+    <form action="" method='POST'>
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" placeholder="Add Item " aria-label="Search" name='item'>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add To List</button>
+    </form>
+    
+    {% if all_item %}
+    
+    <!-- {{user}} -->
+        {% for thing in all_item %}
+        <tr>
+            {% if thing.user == user %}
+            <td><center>{{ thing.item }}</center></td>
+            <td><center><a href="{% url 'delete' thing.id %}">Delete</a></center></td>
+        </tr>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </table>
+    {% else %}
+    <img width="900" height="500" class="center" src="{% static 'images/todo.jpg' %}">
+{% endif %}
+{% endblock %}
